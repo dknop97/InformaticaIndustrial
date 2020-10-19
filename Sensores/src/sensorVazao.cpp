@@ -38,7 +38,7 @@ bool SensorVazao::lerDados()
             vector<string> dadosHeader(this->headers.size());
             // cout << "LINHA SENDO ANALISADA: \n" << d << endl;
             this->titulo = d.substr(1, idxf-1);
-            // cout << this->titulo << endl;
+            cout << "\n $ Lendo dados do " << this->titulo << endl;
             while (n < this->headers.size())
             {                
                 getline(this->file, d); // pega a linha e a insere em d
@@ -63,17 +63,15 @@ bool SensorVazao::lerDados()
             this->horarioInicialColeta  = dadosHeader[4].substr(0, dadosHeader[4].length()-2);
             this->numAmostras           = stoi(dadosHeader[5]);
 
-            Medicao m;
             getline(this->file, d); // lendo a linha do "%DadosInicio"
             // todos os dados estão em uma única linha
-            idxi = 0;
-            // for (int i = 0; i < this->numAmostras; i++)
             // para os testes, ler apenas os 20 primeiros
-            for (int i = 0; i < 20; i++)
+            // for (int i = 0; i < 20; i++)
+            for (int i = 0; i < this->numAmostras; i++)
             {
                 getline(this->file, d, ','); // pega a linha e a insere em d
-                m.valor = stod(d);
-                this->dados.push_back(m); // faz a alocação dinâmica de m no vector dados
+                double valor = stod(d);
+                this->dados.push_back(valor); // faz a alocação dinâmica de m no vector dados
             }
         }
         else
@@ -106,13 +104,40 @@ void SensorVazao::imprimeDados()
     // }
     cout << " >> Valores: " << endl;
     // identificar a unidade conforme o tipo de dado
-    for (auto it = this->dados.begin(); it != this->dados.end(); it++)
+    for (int i = 0; i < dados.size(); i++)
     {
-        cout << "  >>> " << it->valor << " " << getUnidade() << endl;
+        cout << "  >>> " << dados[i] << " " << getUnidade() << endl;
     }
 }
 
 string SensorVazao::getUnidade()
 {
     return this->unidade;
+}
+
+bool SensorVazao::getDado(const int &posicao, double &dadoARetornar)
+{    
+    if (posicao == -1)
+    {
+        cout << "\n------------\n# [ERRO] A posicao do dado eh invalida (id do erro: -1).\n------------" << endl;
+        return false;
+    }
+    else
+    {
+        dadoARetornar = this->dados[posicao];
+        return true;  
+    }
+}
+
+bool SensorVazao::getVazao(const string &horario, double &vazao)
+{
+    // lembrar de adicionar a unidade quando for exibir a vazão
+    if (this->getDado(this->getPosicao(horario), vazao))
+    {
+        return true;  
+    }
+    else 
+    {
+        return false;
+    }     
 }

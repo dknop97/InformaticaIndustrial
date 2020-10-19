@@ -4,7 +4,6 @@
 #include "sensor.h"
 #include <vector>
 #include <fstream>
-#include "medicao.h"
 
 using namespace std;
 
@@ -19,7 +18,8 @@ public:
     bool lerDados();
     void imprimeDados();
     int getFreqRede();
-    // bool getDado(const string &, double &);
+    double getTensao(const string &, double &); // string com o horário desejado e double com a tensão a ser retornada
+    bool getDado(const int &, double &);
 };
 
 #endif

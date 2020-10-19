@@ -3,14 +3,13 @@
 
 #include <vector>
 #include <fstream>
-#include "medicao.h"
 
 using namespace std;
 
 class Sensor
 {
 protected:
-    vector<Medicao> dados;
+    vector<double> dados;
     vector<string> headers;
     string titulo;
     string nome;
@@ -30,11 +29,9 @@ public:
     string getNome();
     string getId();
     string getHorarioInicialColeta();
-    // getPosicao() retorna a posição do dado buscado dentro do vetor de valores, baseado no horário inicial de coleta e no horário buscado pelo usuário
-    int getPosicao(const string&); 
+    int getPosicao(const string&); // getPosicao() retorna a posição do dado buscado dentro do vetor de valores, baseado no horário inicial de coleta e no horário buscado pelo usuário
     int getNumAmostrasSegundo();
     int getNumAmostras();
-    // bool getDado(const string &, double &);
 };
 
 #endif

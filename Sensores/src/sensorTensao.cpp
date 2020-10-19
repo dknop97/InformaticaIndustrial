@@ -36,7 +36,7 @@ bool SensorTensao::lerDados()
             vector<string> dadosHeader(this->headers.size());
             // cout << "LINHA SENDO ANALISADA: \n" << d << endl;
             this->titulo = d.substr(1, idxf-1);
-            // cout << this->titulo << endl;
+            cout << "\n $ Lendo dados do " << this->titulo << endl;
             while (n < this->headers.size())
             {                
                 getline(this->file, d); // pega a linha e a insere em d
@@ -61,17 +61,15 @@ bool SensorTensao::lerDados()
             this->horarioInicialColeta  = dadosHeader[4].substr(0, dadosHeader[4].length()-2);
             this->numAmostras           = stoi(dadosHeader[5]);
 
-            Medicao m;
             getline(this->file, d); // lendo a linha do "%DadosInicio"
             // todos os dados estão em uma única linha
-            idxi = 0;
-            // for (int i = 0; i < this->numAmostras; i++)
             // para os testes, ler apenas os 20 primeiros
-            for (int i = 0; i < 20; i++)
+            // for (int i = 0; i < 20; i++)
+            for (int i = 0; i < this->numAmostras; i++)
             {
                 getline(this->file, d, ','); // pega a linha e a insere em d
-                m.valor = stod(d);
-                this->dados.push_back(m); // faz a alocação dinâmica de m no vector dados
+                double valor = stod(d);
+                this->dados.push_back(valor); // faz a alocação dinâmica de m no vector dados
             }
         }
         else
@@ -100,13 +98,39 @@ void SensorTensao::imprimeDados()
     // // para os testes, imprimir apenas os 20 primeiros
     cout << " >> Valores: "<<endl;
     // identificar a unidade conforme o tipo de dado
-    for (auto it = this->dados.begin(); it != this->dados.end(); it++)
+    for (int i = 0; i < dados.size(); i++)
     {
-        cout << "  >>> " << it->valor << " V" << endl;
+        cout << "  >>> " << dados[i] << " V" << endl;
     }
 }
 
 int SensorTensao::getFreqRede()
 {
     return this->fRede;
+}
+
+bool SensorTensao::getDado(const int &posicao, double &dadoARetornar)
+{    
+    if (posicao == -1)
+    {
+        cout << "\n------------\n# [ERRO] A posicao do dado eh invalida (id do erro: -1).\n------------" << endl;
+        return false;
+    }
+    else
+    {
+        dadoARetornar = this->dados[posicao];
+        return true;  
+    }
+}
+
+double SensorTensao::getTensao(const string &horario, double &tensao)
+{
+    if (this->getDado(this->getPosicao(horario), tensao))
+    {
+        return true;  
+    }
+    else 
+    {
+        return false;
+    }      
 }
