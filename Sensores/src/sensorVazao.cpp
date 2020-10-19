@@ -3,18 +3,21 @@
 #include <iostream>
 #include <cstring>
 #include <string.h>
+#include <iomanip>
 
 using namespace std;
 
-SensorVazao::SensorVazao(const string& path, const vector<string>& h) : 
-    Sensor::Sensor(path, h), unidade("desconhecida")
+vector<string> headersVazao = {"Nome do Sensor", "ID do sensor", "Unidade das medicoes", "Numero de amostras por segundo", "Horario inicio da coleta", "Total de Amostras"};
+
+SensorVazao::SensorVazao(const string& path) : 
+    Sensor::Sensor(path, headersVazao), unidade("desconhecida")
 {
     // cout << "CONSTRUTOR SENSOR DE VAZAO:" << this->file.is_open() << endl;
 }
 
 SensorVazao::~SensorVazao()
 {
-    cout << "\n%% DESTRUTOR DO SENSOR DE VAZAO\n" << endl;
+    // cout << "\n%% DESTRUTOR DO SENSOR DE VAZAO\n" << endl;
     this->file.close();
 }
 

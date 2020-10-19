@@ -15,7 +15,7 @@ class SensorVazao : public Sensor
 private:
     string unidade;
 public:
-    SensorVazao(const string &, const vector<string> &);
+    SensorVazao(const string &);
     ~SensorVazao();
     bool lerDados();
     void imprimeDados();

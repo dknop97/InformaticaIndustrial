@@ -30,6 +30,8 @@ public:
     string getNome();
     string getId();
     string getHorarioInicialColeta();
+    // getPosicao() retorna a posição do dado buscado dentro do vetor de valores, baseado no horário inicial de coleta e no horário buscado pelo usuário
+    int getPosicao(const string&); 
     int getNumAmostrasSegundo();
     int getNumAmostras();
     // bool getDado(const string &, double &);

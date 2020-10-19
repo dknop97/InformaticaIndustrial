@@ -16,7 +16,7 @@
         {
             "label": "run",
             "type": "shell",
-            "command": ".\\bin\\sensorcorrente.exe",
+            "command": ".\\bin\\sensores.exe",
             "dependsOn": "build"
         }
     ]

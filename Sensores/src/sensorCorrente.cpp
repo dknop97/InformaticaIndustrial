@@ -5,16 +5,17 @@
 #include <string.h>
 
 using namespace std;
+vector<string> headersCorrente = {"Nome do Sensor", "ID do sensor", "Frequencia da rede", "Numero de amostras por segundo", "Horario inicio da coleta", "Total de Amostras"};
 
-SensorCorrente::SensorCorrente(const string& path, const vector<string>& h) : 
-    Sensor::Sensor(path, h), fRede(0)
+SensorCorrente::SensorCorrente(const string& path) : 
+    Sensor::Sensor(path, headersCorrente), fRede(0)
 {
     // cout << "CONSTRUTOR SENSOR DE CORRENTE:" << this->file.is_open() << endl;
 }
 
 SensorCorrente::~SensorCorrente()
 {
-    cout << "\n%% DESTRUTOR DO SENSOR DE CORRENTE\n" << endl;
+    // cout << "\n%% DESTRUTOR DO SENSOR DE CORRENTE\n" << endl;
     this->file.close();
 }
 

@@ -14,7 +14,7 @@ class SensorTensao : public Sensor
 private:
     int fRede;
 public:
-    SensorTensao(const string &, const vector<string> &);
+    SensorTensao(const string &);
     ~SensorTensao();
     bool lerDados();
     void imprimeDados();

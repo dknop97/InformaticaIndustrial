@@ -5,16 +5,17 @@
 #include <string.h>
 
 using namespace std;
+vector<string> headersTensao = {"Nome do Sensor", "ID do sensor", "Frequencia da rede", "Numero de amostras por segundo", "Horario inicio da coleta", "Total de Amostras"};
 
-SensorTensao::SensorTensao(const string& path, const vector<string>& h) : 
-    Sensor::Sensor(path, h), fRede(0)
+SensorTensao::SensorTensao(const string& path) : 
+    Sensor::Sensor(path, headersTensao), fRede(0)
 {
     // cout << "CONSTRUTOR SENSOR DE TENSAO:" << this->file.is_open() << endl;
 }
 
 SensorTensao::~SensorTensao()
 {
-    cout << "\n%% DESTRUTOR DO SENSOR DE TENSAO\n" << endl;
+    // cout << "\n%% DESTRUTOR DO SENSOR DE TENSAO\n" << endl;
     this->file.close();
 }
 

@@ -6,7 +6,7 @@ SRC     := src
 INCLUDE := inc
 
 LIBRARIES   :=
-EXECUTABLE  := sensorcorrente
+EXECUTABLE  := sensores
 
 
 all: $(BIN)/$(EXECUTABLE)

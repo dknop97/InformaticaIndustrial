@@ -15,7 +15,7 @@ private:
     int fRede;
     // ifstream file;
 public:
-    SensorCorrente(const string &, const vector<string> &);
+    SensorCorrente(const string &);
     ~SensorCorrente();
     bool lerDados();
     void imprimeDados();
