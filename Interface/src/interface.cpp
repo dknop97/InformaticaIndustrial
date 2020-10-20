@@ -33,8 +33,7 @@ void monitorarBombas()
             break;
         case 3: // SAIR do menu das bombas
             cout << ">> Retornando ao menu inicial...\n";
-            comandosUsuario = 1;
-            break;
+            return;
         default:
             cout << " # Opcao invalida! Tente novamente...\n";
             break;
