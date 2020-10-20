@@ -1,4 +1,4 @@
-## Repositório contendo os códigos do Trabalho 01 - Sistema de Monitoramento da Planta de Bombeamento
+## Trabalho 01 - Sistema de Monitoramento da Planta de Bombeamento
 
 ##### Tarefas a fazer sobre o reservatório:
 - [x] Implementação do cálculo de volume no tanque
