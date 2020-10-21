@@ -62,22 +62,15 @@ bool SensorVazao::lerDados()
             this->numAmostrasSegundo    = stoi(dadosHeader[3]); // stoi converte string em int
             this->horarioInicialColeta  = dadosHeader[4].substr(0, dadosHeader[4].length()-2);
             this->numAmostras           = stoi(dadosHeader[5]);
+            this->fracSegundo = 1.0 / getNumAmostrasSegundo();
 
             getline(this->file, d); // lendo a linha do "%DadosInicio"
             // todos os dados estão em uma única linha
-            // para os testes, ler apenas os 20 primeiros
-            // for (int i = 0; i < 20; i++)
-            int fatorCorrecao = 1;
-            // cout << "UNIDADE = ." << this->unidade << "." << endl;
-            if (this->unidade == "m3/s ") // Corrigindo a unidade de m³/s para L
-            {
-                fatorCorrecao = 1000;
-            }
             for (int i = 0; i < this->numAmostras; i++)
             {
                 getline(this->file, d, ','); // pega a linha e a insere em d
                 double valor = stod(d);
-                this->dados.push_back(valor*fatorCorrecao); // faz a alocação dinâmica de m no vector dados
+                this->dados.push_back(valor); // faz a alocação dinâmica de m no vector dados
             }
         }
         else
@@ -93,28 +86,23 @@ bool SensorVazao::lerDados()
     return true;
 }
 
-void SensorVazao::imprimeDados()
-{
-    cout << "> "<< this->getTitulo() << endl;
-    cout << " >> Nome: " << this->getNome()<<endl;
-    cout << " >> ID: " << this->getId()<<endl;
-    cout << " >> Unidade das medicoes: " << this->getUnidade() <<endl;
-    cout << " >> Numero de amostras por segundo: " << this->getNumAmostrasSegundo()<<endl;
-    cout << " >> Horario inicio da coleta: " << this->getHorarioInicialColeta() << " h"<< endl;
-    cout << " >> Total de amostras: " << this->getNumAmostras() << endl;
+// IMPRIME DADOS USADA PARA DEBUGAR
+// void SensorVazao::imprimeDados()
+// {
+//     cout << "> "<< this->getTitulo() << endl;
+//     cout << " >> Nome: " << this->getNome()<<endl;
+//     cout << " >> ID: " << this->getId()<<endl;
+//     cout << " >> Unidade das medicoes: " << this->getUnidade() <<endl;
+//     cout << " >> Numero de amostras por segundo: " << this->getNumAmostrasSegundo()<<endl;
+//     cout << " >> Horario inicio da coleta: " << this->getHorarioInicialColeta() << " h"<< endl;
+//     cout << " >> Total de amostras: " << this->getNumAmostras() << endl;
     
-    // // para os testes, imprimir apenas os 20 primeiros
-    // for (int count = 0; count < 20; count++)
-    // {
-    //     cout << "Valor " << count << ": " << this->dados[count].valor << endl;
-    // }
-    cout << " >> Valores: " << endl;
-    // identificar a unidade conforme o tipo de dado
-    for (int i = 0; i < dados.size(); i++)
-    {
-        cout << "  >>> " << dados[i] << " " << getUnidade() << endl;
-    }
-}
+//     cout << " >> Valores: " << endl;
+//     for (int i = 0; i < dados.size(); i++)
+//     {
+//         cout << "  >>> " << dados[i] << " " << getUnidade() << endl;
+//     }
+// }
 
 string SensorVazao::getUnidade()
 {

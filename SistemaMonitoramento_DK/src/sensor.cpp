@@ -60,6 +60,16 @@ string Sensor::getHorarioInicialColeta()
     return this->horarioInicialColeta;
 }
 
+string Sensor::getHorarioFinalColeta()
+{
+    this->fracSegundo = 1.0 / getNumAmostrasSegundo();
+    string horarioInicial = getHorarioInicialColeta();
+    int horarioInicialSegundos = this->horaParaSegundo(horarioInicial);
+    int horarioFinalSegundos =  horarioInicialSegundos + (this->fracSegundo * this->numAmostras);
+    this->horarioFinalColeta = horaParaString(horarioFinalSegundos);
+    return this->horarioFinalColeta;
+}
+
 int Sensor::getNumAmostrasSegundo()
 {
     return this->numAmostrasSegundo;
@@ -70,20 +80,33 @@ int Sensor::getNumAmostras()
     return this->numAmostras;
 }
 
-double Sensor::horaParaSegundo(const string& horarioDoUsuario)
+int Sensor::horaParaSegundo(const string& horarioDoUsuario)
 {
     // cout << "Horario passado pelo usuario: " << horarioDoUsuario << endl;
-    // 01234567
-    // 19:55:44
     int idx = horarioDoUsuario.find(':'); // retorna idx = 2
     // transformando hora em segundos
-    double horarioEmSegundos = (stod(horarioDoUsuario.substr(0, idx)) * 3600);
+    int horarioEmSegundos = (stod(horarioDoUsuario.substr(0, idx)) * 3600);
     // transformando minuto em segundos
     horarioEmSegundos += (stod(horarioDoUsuario.substr(idx + 1, idx + 2)) * 60);
     horarioEmSegundos += (stod(horarioDoUsuario.substr(idx + 4, idx + 5)));
     // cout << setprecision(4) << fixed;  // para exibição com casas decimais
     // cout << setprecision(4) << "hora em segundos: " << horarioEmSegundos << fixed << endl;
     return horarioEmSegundos;  
+}
+
+string Sensor::horaParaString(int &horarioEmSegundos)
+{
+    cout << ">>> horaParaString <<<" << endl;
+    int horas = horarioEmSegundos / 3600; // retirando a parcela das horas do total de segundos
+    horarioEmSegundos -= horas * 3600; // restaram agora minutos e segundos
+    int minutos = horarioEmSegundos / 60; // retirando a parcela dos minutos do total de segundos
+    horarioEmSegundos -= minutos * 60; // restaram agora só os segundos 
+    cout << "> horas: " << horas << endl;
+    cout << "> minutos: " << minutos << endl;
+    cout << "> horas: " << horarioEmSegundos << endl;
+    string horario = to_string(horas) + ":" + to_string(minutos) + ":" + to_string(horarioEmSegundos);
+    
+    return horario;
 }
 
 int Sensor::getPosicao(const string& horarioDoUsuario)
@@ -93,9 +116,7 @@ int Sensor::getPosicao(const string& horarioDoUsuario)
     // cout << "> Horario passado pelo usuario: " << horarioDoUsuario << endl;
     double horarioUsuarioEmSegundos = horaParaSegundo(horarioDoUsuario);
     // cout << setprecision(4) << "> Horario passado pelo usuario em segundos: " << horarioUsuarioEmSegundos << fixed << endl;
-
-    // obter fração de segundo referente à cada amostra= 1s / numAmostrasSegundo
-    double fracSegundo = 1.0 / getNumAmostrasSegundo();
+    // obter fração de segundo referente à cada amostra= 1s / numAmostrasSegundo    
     // cout << setprecision(6);  // para exibição com casas decimais
     // cout << "> Num amostras por segundo: " << this->getNumAmostrasSegundo() << endl;
     // cout << "> Fracao de segundos entre amostras: " << fracSegundo << endl;
@@ -103,7 +124,7 @@ int Sensor::getPosicao(const string& horarioDoUsuario)
     double horarioInicialEmSegundos = horaParaSegundo(this->getHorarioInicialColeta());
     // cout << "> Horario inicio da coleta em segundos: " << horarioInicialEmSegundos << endl;
     // calcular agora o indice, posicao, do valor referente ao horário passado pelo usuario
-    int posicao = (horarioUsuarioEmSegundos - horarioInicialEmSegundos) / fracSegundo;
+    int posicao = (horarioUsuarioEmSegundos - horarioInicialEmSegundos) / this->fracSegundo;
     // cout << "> Posicao: " << posicao << endl;
 
     if (horarioUsuarioEmSegundos < horarioInicialEmSegundos)

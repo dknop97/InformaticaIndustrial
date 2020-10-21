@@ -18,7 +18,7 @@ double calculaVolume(const string &horario, SensorVazao &SVEntrada, SensorVazao 
         SVEntrada.getDado(i,volumeAux); // obtém a vazão de entrada
         volume += volumeAux; // soma a vazão de entrada
         SVSaida.getDado(i,volumeAux); // obtém a vazão de saída
-        volume -= volumeAux; // subtrai a vazão de saída
+        volume -= (volumeAux * 1000); // subtrai a vazão de saída
     }
     // o volume até o horario é dado por (VazaoEntrada - VazaoSaida)*(1segundo) do instante inicial até o horario desejado
     return volume; // ok!

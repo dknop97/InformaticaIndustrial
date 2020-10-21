@@ -57,6 +57,7 @@ bool SensorCorrente::lerDados()
             this->numAmostrasSegundo    = stoi(dadosHeader[3]);
             this->horarioInicialColeta  = dadosHeader[4].substr(0, dadosHeader[4].length()-2);
             this->numAmostras           = stoi(dadosHeader[5]);
+            this->fracSegundo = 1.0 / getNumAmostrasSegundo();
 
             getline(this->file, d); // lendo a linha do "%DadosInicio"
             // todos os dados estão em uma única linha
@@ -82,24 +83,24 @@ bool SensorCorrente::lerDados()
     return true;
 }
 
-void SensorCorrente::imprimeDados()
-{
-    cout << "> "<< this->getTitulo() << endl;
-    cout << " >> Nome: " << this->getNome()<<endl;
-    cout << " >> ID: " << this->getId()<<endl;
-    cout << " >> Frequencia da rede: " << this->getFreqRede() << " Hz"<<endl;
-    cout << " >> Numero de amostras por segundo: " << this->getNumAmostrasSegundo()<<endl;
-    cout << " >> Horario inicio da coleta: " << this->getHorarioInicialColeta() << " h"<< endl;
-    cout << " >> Total de amostras: " << this->getNumAmostras() << endl;
+// void SensorCorrente::imprimeDados()
+// {
+//     cout << "> "<< this->getTitulo() << endl;
+//     cout << " >> Nome: " << this->getNome()<<endl;
+//     cout << " >> ID: " << this->getId()<<endl;
+//     cout << " >> Frequencia da rede: " << this->getFreqRede() << " Hz"<<endl;
+//     cout << " >> Numero de amostras por segundo: " << this->getNumAmostrasSegundo()<<endl;
+//     cout << " >> Horario inicio da coleta: " << this->getHorarioInicialColeta() << " h"<< endl;
+//     cout << " >> Total de amostras: " << this->getNumAmostras() << endl;
     
-    // para os testes, imprimir apenas os 20 primeiros
-    cout << " >> Valores: "<<endl;
-    // identificar a unidade conforme o tipo de dado
-    for (int i = 0; i < dados.size(); i++)
-    {
-        cout << "  >>> " << dados[i] << " A" << endl;
-    }
-}
+//     // para os testes, imprimir apenas os 20 primeiros
+//     cout << " >> Valores: "<<endl;
+//     // identificar a unidade conforme o tipo de dado
+//     for (int i = 0; i < dados.size(); i++)
+//     {
+//         cout << "  >>> " << dados[i] << " A" << endl;
+//     }
+// }
 
 int SensorCorrente::getFreqRede()
 {

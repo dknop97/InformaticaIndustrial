@@ -3,6 +3,7 @@
 #include "sensorTensao.h"
 #include "sensorVazao.h"
 #include "reservatorio.h"
+#include "bomba.h"
 
 #include <iostream>
 #include <string>
@@ -22,8 +23,9 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout << ">>> Monitorando Bomba 1\n";
             // implementar indicativo para a bomba 1
             // para a bomba 1, tenho SC1, ST1; então, posso fazer algo do tipo:
-            // dada uma classe Bomba, que recebe como argumentos os objetos dos sensores relacionados
+            // dada um aq classe Bomba, que recebe como argumentos os objetos dos sensores relacionados
             // Bomba bomba(SC1, SV1);
+            comandosUsuario = 3;
             break;
         case 2:
             cout << ">>> Monitorando Bomba 2\n";
@@ -31,6 +33,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             // para a bomba 2, tenho SC2, ST2; então, posso fazer algo do tipo:
             // dada uma classe Bomba, que recebe como argumentos os objetos dos sensores relacionados
             // Bomba bomba(SC2, SV2);
+            comandosUsuario = 3;
             break;
         case 3: // SAIR do menu das bombas
             cout << ">> Retornando ao menu inicial...\n";
@@ -43,8 +46,10 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
     } while (comandosUsuario != 3);
 
     string horaDesejada = "";
-    // string horaInicial, horaFinal;
-    cout << ">>> Digite a hora desejada (horaI - horaFinal): "; // buscar a hora inicial da coleta e calcular a final aqui de acordo com a bomba em análise
+    string horaInicial  = SC1.getHorarioInicialColeta();
+    string horaFinal    = SC1.getHorarioFinalColeta();
+    // implementar cálculo do horário final das amostras
+    cout << ">>> Digite a hora desejada (" << horaInicial << " - " << horaFinal << "): ";
     cin >> horaDesejada;                                        // a validação da horaDesejada está sendo feita no método de busca
     cout << ">>> Escolha a informacao desejada sobre a bomba no horario informado: \n";
     do
@@ -88,7 +93,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             break;
         case 7:
             // alterar a horaDesejada
-            cout << ">>> Digite a hora desejada (horaI - horaFinal): "; // buscar a hora inicial da coleta e calcular a final aqui de acordo com a bomba em análise
+            cout << ">>> Digite a hora desejada (" << horaInicial << " - " << horaFinal << "): ";
             cin >> horaDesejada;                                        // a validação da horaDesejada está sendo feita no método de busca
             break;
         case 8: // sair do menu
@@ -107,11 +112,12 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
     // Apesar de só termos 1 cálculo pra fazer, de volume, é bom termos o arquivo de funções
     //      para outras possíveis implementações
     int comandosUsuario = 0;
-    string horaDesejada = "";
     double volume = 0.0;
-    string horaInicial = SVEntrada.getHorarioInicialColeta();
+    string horaDesejada = "";
+    string horaInicial  = SVEntrada.getHorarioInicialColeta(); // qualquer objeto, visto que o horário final ´eo mesmo, assim como inicial
+    string horaFinal    = SVEntrada.getHorarioFinalColeta();
     // implemtnar cálculo do horário final das amostras
-    cout << ">>> Digite a hora desejada (" << horaInicial << " - horaFinal): "; // buscar a hora inicial da coleta e calcular a final aqui de acordo com a bomba em análise
+    cout << ">>> Digite a hora desejada (" << horaInicial << " - " << horaFinal << "): ";
     cin >> horaDesejada;                                        // a validação da horaDesejada está sendo feita no método de busca
     cout << ">>> Escolha a informacao desejada sobre o reservatorio no horario informado: \n";
     do
@@ -129,27 +135,27 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
         case 1:
             // obter o volume do reservatório na horaDesejada
             volume = calculaVolume(horaDesejada, SVEntrada, SVSaida);
-            cout << ">>> O volume do reservatorio as "<< horaDesejada << "h era de " << volume << "L\n" << endl;
+            cout << ">>> O volume do reservatorio as "<< horaDesejada << "h era de " << volume << " litros.\n" << endl;
             break;
         case 2:
             // obter vazão de entrada no reservatório na horaDesejada
             double vazaoEntrada;
             SVEntrada.getVazao(horaDesejada, vazaoEntrada);
-            cout << ">>> A vazao de entrada as "<< horaDesejada << "h era de " << vazaoEntrada << "L/s.\n" << endl;
+            cout << ">>> A vazao de entrada as "<< horaDesejada << "h era de " << vazaoEntrada << " " << SVEntrada.getUnidade() << ".\n" << endl;
             break;
         case 3:
             // obter vazão de saída no reservatório na horaDesejada
             double vazaoSaida;
             SVSaida.getVazao(horaDesejada, vazaoSaida);
-            cout << ">>> A vazao de saida as "<< horaDesejada << "h era de " << vazaoSaida << "L/s.\n" << endl;
+            cout << ">>> A vazao de saida as "<< horaDesejada << "h era de " << vazaoSaida << " " << SVSaida.getUnidade() << ".\n" << endl;
             break;
         case 4:
             // alterar a horaDesejada
-            cout << ">>> Digite a hora desejada (horaI - horaFinal): "; // buscar a hora inicial da coleta e calcular a final aqui de acordo com a bomba em análise
+            cout << ">>> Digite a hora desejada (" << horaInicial << " - " << horaFinal << "): ";cout << ">>> Digite a hora desejada (" << horaInicial << " - horaFinal): "; // buscar a hora inicial da coleta e calcular a final aqui de acordo com a bomba em análise
             cin >> horaDesejada;                                        // a validação da horaDesejada está sendo feita no método de busca
             break;
         case 5: // sair do menu
-            cout << ">> Retornando ao menu anterior...\n";
+            cout << ">>> Retornando ao menu anterior...\n";
             break;
         default:
             break;
