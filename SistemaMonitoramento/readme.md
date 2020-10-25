@@ -1,4 +1,8 @@
 ## Trabalho 01 - Sistema de Monitoramento da Planta de Bombeamento
+- Grupo composto pelos alunos:
+	- David Nery Henriques Knop - 201669038A - Turma A
+	- Guilherme de Souza Barbosa Evangelista Coelho - 201765198AI - Turma B
+  - Thiago Duque Saber de Lima - 201665230AI - Turma B
 
 ##### Tarefas a fazer sobre o reservatório:
 - [x] Implementação do cálculo de volume no tanque
