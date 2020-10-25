@@ -88,7 +88,6 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
 {
     //Declarando as bombas
     Bomba bomba;
-    double SC, ST;
     int comandosUsuario = 0;
     do
     {
@@ -128,6 +127,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
     string horaInicial  = SC1.getHorarioInicialColeta();
     string horaFinal    = SC1.getHorarioFinalColeta();
     string horaDesejada = setHorarioDesejado(horaInicial, horaFinal);
+    string horaInicialEnergia, horaFinalEnergia;
     // se -1 for retornado pelo setHorarioDesejado, significa que deu erro 
     //      e devemos encerrar essa função, ou seja, retornar ao menu anterior
     if (horaDesejada == "-1") { return;}     
@@ -135,12 +135,12 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
     cout << ">>> Escolha a informacao desejada sobre a bomba no horario informado: \n";
     do
     {
-        cout << "\n> 1. Corrente RMS" << endl;
+        cout << "> 1.  Corrente RMS" << endl;
         cout << "> 2.  Tensao RMS" << endl;
         cout << "> 3.  Potencia ativa" << endl;
         cout << "> 4.  Potencia aparente" << endl;
         cout << "> 5.  Fator de potencia" << endl;
-        cout << "> 6.  Energia consumida ate o horario informado" << endl;
+        cout << "> 6.  Energia consumida entre horarios" << endl;
         cout << "> 7.  Obter nome do sensor de corrente" << endl;
         cout << "> 8.  Obter ID do sensor de corrente" << endl;
         cout << "> 9.  Obter nome do sensor de tensao" << endl;
@@ -157,7 +157,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout << fixed;
             cout.precision(2);
             valorAux = bomba.calcularCorrenteRMS(horaDesejada);
-            cout <<"Valor da Corrente RMS: " << valorAux << " A"<< endl;
+            cout <<">>> Valor da Corrente RMS: " << valorAux << " A"<< endl;
             // system ("pause");
             break;
         case 2:
@@ -165,19 +165,19 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout << fixed;
             cout.precision(2);
             valorAux = bomba.calcularTensaoRMS(horaDesejada);
-            cout <<"Valor da Tensao RMS: " << valorAux << " V"<< endl;
+            cout <<">>> Valor da Tensao RMS: " << valorAux << " V"<< endl;
             // system ("pause");
             break;
         case 3:
             // obter potencia ativa da bomba X na horaDesejada
             valorAux = bomba.getPotAtiva(horaDesejada);
-            cout <<"Valor da Potencia ativa: " << valorAux << " W"<< endl;
+            cout <<">>> Valor da Potencia ativa: " << valorAux << " W"<< endl;
             // system ("pause");
             break;
         case 4:
             // obter potencia aparente da bomba X na horaDesejada
             valorAux = bomba.calcularPotenciaAparente(horaDesejada);
-            cout <<"Valor da Potencia aparente: " << valorAux << " VA"<< endl;
+            cout <<">>> Valor da Potencia aparente: " << valorAux << " VA"<< endl;
             // system ("pause");
             break;
         case 5:
@@ -185,33 +185,34 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout << fixed;
             cout.precision(2);
             valorAux = bomba.calculaFP(horaDesejada);
-            cout <<"Fator de potencia: " << valorAux << endl;
+            cout <<">>> Fator de potencia: " << valorAux << endl;
             // system ("pause");
             break;
         case 6:
             // obter energia consumida pela bomba X até a horaDesejada
             cout << fixed;
             cout.precision(2);
-            valorAux = bomba.calculaEnergia(horaDesejada);
-            cout <<"Energia consumida: " << valorAux << " kWh"<< endl;
+            horaInicialEnergia  = setHorarioDesejado(horaInicial, horaFinal);
+            horaFinalEnergia    = setHorarioDesejado(horaInicial, horaFinal);
+            valorAux = bomba.calculaEnergia(horaInicialEnergia, horaFinalEnergia);
+            cout <<">>> Energia consumida entre " << horaInicial << "h e " << horaFinalEnergia <<"h: " << valorAux << " kWh"<< endl;
             // system ("pause");
             break;
         case 7:
             // Obter nome do sensor de corrente
-            // DEFINIR COMO ESPECIFICAR DE QUAL SENSOR ESTAMOS NOS REFERENCIANDO
-            cout << ">>> Nome do sensor de corrente: " << endl;
+            cout << ">>> Nome do sensor de corrente: "<< bomba.sensorCorrente->getNome() << endl;
             break;
         case 8:
             // Obter ID do sensor de corrente
-            cout << ">>> ID do sensor de corrente: " << endl;
+            cout << ">>> ID do sensor de corrente: "<< bomba.sensorCorrente->getId() << endl;
             break;
         case 9:
             // Obter nome do sensor de tensao
-            cout << ">>> Nome do sensor de tensao: " << endl;
+            cout << ">>> Nome do sensor de tensao: "<< bomba.sensorTensao->getNome() << endl;
             break;
         case 10:
             // Obter ID do sensor de tensao
-            cout << ">>> ID do sensor de tensao: " << endl;
+            cout << ">>> Nome do sensor de tensao: "<< bomba.sensorTensao->getId() << endl;
             break;
         case 11:
             // alterar a horaDesejada
@@ -270,6 +271,8 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
         case 1:
             // obter o volume do reservatório na horaDesejada
             volume = calculaVolume(horaDesejada, SVEntrada, SVSaida);
+            cout << fixed;
+            cout.precision(2);
             cout << ">>> O volume do reservatorio as "<< horaDesejada << "h era de " << volume << " litros." << endl;
             // system ("pause");
             break;
@@ -277,6 +280,8 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             // obter vazão de entrada no reservatório na horaDesejada
             double vazaoEntrada;
             SVEntrada.getVazao(horaDesejada, vazaoEntrada);
+            cout << fixed;
+            cout.precision(6);
             cout << ">>> A vazao de entrada as "<< horaDesejada << "h era de " << vazaoEntrada << " " << SVEntrada.getUnidade() << "." << endl;
             // system ("pause");
             break;
@@ -284,6 +289,8 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             // obter vazão de saída no reservatório na horaDesejada
             double vazaoSaida;
             SVSaida.getVazao(horaDesejada, vazaoSaida);
+            cout << fixed;
+            cout.precision(6);
             cout << ">>> A vazao de saida as "<< horaDesejada << "h era de " << vazaoSaida << " " << SVSaida.getUnidade() << "." << endl;
             // system ("pause");
             break;
@@ -326,12 +333,12 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
 void IHM()
 {
     // declaração dos paths dos arquivos contendo os dados de cada sensor
-    string pathSensorCorrente1  = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorCorrente1.dat";
-    string pathSensorCorrente2  = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorCorrente2.dat";
-    string pathSensorTensao1    = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorTensao1.dat";
-    string pathSensorTensao2    = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorTensao2.dat";
-    string pathSensorVazao1     = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorVazao1.dat";
-    string pathSensorVazao2     = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_1\\DK\\SistemaMonitoramento_DK\\dados\\SensorVazao2.dat";
+    string pathSensorCorrente1  = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorCorrente1.dat";
+    string pathSensorCorrente2  = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorCorrente2.dat";
+    string pathSensorTensao1    = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorTensao1.dat";
+    string pathSensorTensao2    = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorTensao2.dat";
+    string pathSensorVazao1     = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorVazao1.dat";
+    string pathSensorVazao2     = "C:\\Users\\dknop\\Documents\\GitHub\\InformaticaIndustrial\\SistemaMonitoramento\\dados\\SensorVazao2.dat";
 
     // instanciamento dos objetos das classes
     SensorCorrente  SC1(pathSensorCorrente1);

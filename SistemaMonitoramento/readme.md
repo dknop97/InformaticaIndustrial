@@ -13,8 +13,8 @@
 - [x] Implementação do cálculo de potência ativa no horário em análise
 - [x] Implementação do cálculo de potência aparente no horário em análise
 - [x] Implementação do cálculo de fator potência no horário em análise
-- [ ] Implementação do cálculo de energia consumida até o horário em análise
+- [x] Implementação do cálculo de energia consumida até o horário em análise
 
 ##### Antes de executar conferir:
-- Conferir o launch.json e tasks.json se estao com o mesmo nome do executavel.
+- Conferir o Makefile, launch.json e tasks.json se estao com o mesmo nome do executavel.
 - Alterar os paths em interface.cpp para o diretorio dos dados desejado de acordo com seu dispositivo.

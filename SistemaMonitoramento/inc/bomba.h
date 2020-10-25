@@ -18,10 +18,10 @@ public:
     double calcularCorrenteRMS(const string&);
     double calcularTensaoRMS(const string&);
     double calcularPotenciaAtiva(int, int);
-    double calcularPotenciaAparente(const string& HoraDesejada);
-    double calculaFP(const string& horaDesejada);
-    double calculaEnergia(const string& horaDesejada);
-    double getPotAtiva(const string& HoraDesejada);
+    double calcularPotenciaAparente(const string&);
+    double calculaFP(const string&);
+    double calculaEnergia(const string&, const string&);
+    double getPotAtiva(const string&);
 };
 
 

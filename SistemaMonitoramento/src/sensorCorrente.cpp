@@ -124,17 +124,3 @@ double SensorCorrente::getRMS(const string &horario)
     
     
 }
-double SensorCorrente::getRMSAcumulado(const string &horario)
-{
-    
-    int N = numAmostrasSegundo/getFreqRede(); //Numero de amostras por ciclo de onda
-    int posicao = getPosicao(horario);	
-    
-        double acumulaRMS;
-        for (int i = 0; i <= posicao; i++)
-        {
-            acumulaRMS = calcRMS(N, i);
-        }
-
-        return acumulaRMS;
-}
