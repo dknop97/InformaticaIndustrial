@@ -158,7 +158,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout.precision(2);
             valorAux = bomba.calcularCorrenteRMS(horaDesejada);
             cout <<">>> Valor da Corrente RMS: " << valorAux << " A"<< endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 2:
             // obter tensão rms da bomba X
@@ -166,19 +166,19 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout.precision(2);
             valorAux = bomba.calcularTensaoRMS(horaDesejada);
             cout <<">>> Valor da Tensao RMS: " << valorAux << " V"<< endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 3:
             // obter potencia ativa da bomba X na horaDesejada
             valorAux = bomba.getPotAtiva(horaDesejada);
             cout <<">>> Valor da Potencia ativa: " << valorAux << " W"<< endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 4:
             // obter potencia aparente da bomba X na horaDesejada
             valorAux = bomba.calcularPotenciaAparente(horaDesejada);
             cout <<">>> Valor da Potencia aparente: " << valorAux << " VA"<< endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 5:
             // obter fator de potencia da bomba X na horaDesejada
@@ -186,7 +186,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             cout.precision(2);
             valorAux = bomba.calculaFP(horaDesejada);
             cout <<">>> Fator de potencia: " << valorAux << endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 6:
             // obter energia consumida pela bomba X até a horaDesejada
@@ -196,7 +196,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             horaFinalEnergia    = setHorarioDesejado(horaInicial, horaFinal);
             valorAux = bomba.calculaEnergia(horaInicialEnergia, horaFinalEnergia);
             cout <<">>> Energia consumida entre " << horaInicial << "h e " << horaFinalEnergia <<"h: " << valorAux << " kWh"<< endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 7:
             // Obter nome do sensor de corrente
@@ -205,14 +205,17 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
         case 8:
             // Obter ID do sensor de corrente
             cout << ">>> ID do sensor de corrente: "<< bomba.sensorCorrente->getId() << endl;
+            system ("pause");
             break;
         case 9:
             // Obter nome do sensor de tensao
             cout << ">>> Nome do sensor de tensao: "<< bomba.sensorTensao->getNome() << endl;
+            system ("pause");
             break;
         case 10:
             // Obter ID do sensor de tensao
             cout << ">>> Nome do sensor de tensao: "<< bomba.sensorTensao->getId() << endl;
+            system ("pause");
             break;
         case 11:
             // alterar a horaDesejada
@@ -224,6 +227,10 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
             {
                 cout << ">>> [OBS] O horario definido anteriormente foi mantido." << endl;
                 horaDesejada = horaAnterior;
+            }
+            else
+            {
+                system ("pause");
             }
             break;
         case 12: // sair do menu
@@ -274,7 +281,7 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             cout << fixed;
             cout.precision(2);
             cout << ">>> O volume do reservatorio as "<< horaDesejada << "h era de " << volume << " litros." << endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 2:
             // obter vazão de entrada no reservatório na horaDesejada
@@ -283,7 +290,7 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             cout << fixed;
             cout.precision(6);
             cout << ">>> A vazao de entrada as "<< horaDesejada << "h era de " << vazaoEntrada << " " << SVEntrada.getUnidade() << "." << endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 3:
             // obter vazão de saída no reservatório na horaDesejada
@@ -292,7 +299,7 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             cout << fixed;
             cout.precision(6);
             cout << ">>> A vazao de saida as "<< horaDesejada << "h era de " << vazaoSaida << " " << SVSaida.getUnidade() << "." << endl;
-            // system ("pause");
+            system ("pause");
             break;
         case 4:
             cout << ">>> Nome do sensor de vazao de entrada: " << SVEntrada.getNome() << endl;
@@ -372,6 +379,7 @@ void IHM()
             break;
         case 3: // SAIR
             cout << ">> Encerrando o Programa.\n";
+            system ("pause");
             return;
         default:
             cout << " # Opcao invalida! Tente novamente...\n";

@@ -119,7 +119,7 @@ double Bomba::calculaEnergia(const string& horaInicial, const string& horaFinal)
         sensorCorrente->getDado(i+1, correnteProxima);
         sensorTensao->getDado(i+1, tensaoProxima);
         double aux = 0;
-        aux = (correnteAtual*tensaoAtual)/(2*NumAmostrasSegundo);
+        aux = (correnteAtual*tensaoAtual)/(2*(NumAmostrasSegundo-1));
         double aux2 = 0;
         aux2 = (correnteProxima*tensaoProxima)/(2*NumAmostrasSegundo);
         energia +=  aux + aux2;
