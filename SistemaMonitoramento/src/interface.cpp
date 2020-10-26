@@ -201,6 +201,7 @@ void monitorarBombas(SensorCorrente &SC1, SensorCorrente &SC2, SensorTensao &ST1
         case 7:
             // Obter nome do sensor de corrente
             cout << ">>> Nome do sensor de corrente: "<< bomba.sensorCorrente->getNome() << endl;
+            system ("pause");
             break;
         case 8:
             // Obter ID do sensor de corrente
@@ -303,15 +304,19 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             break;
         case 4:
             cout << ">>> Nome do sensor de vazao de entrada: " << SVEntrada.getNome() << endl;
+            system ("pause");
             break;
         case 5:
             cout << ">>> ID do sensor de vazao de entrada: " << SVEntrada.getId() << endl;
+            system ("pause");
             break;
         case 6:
             cout << ">>> Nome do sensor de vazao de saida: " << SVSaida.getNome() << endl;
+            system ("pause");
             break;
         case 7:
             cout << ">>> ID do sensor de vazao de saida: " << SVSaida.getId() << endl;
+            system ("pause");
             break;
         case 8:
             // alterar a horaDesejada
@@ -324,6 +329,10 @@ void monitorarReservatorio(SensorVazao& SVEntrada, SensorVazao& SVSaida)
             {
                 cout << ">>> [OBS] O horario definido anteriormente foi mantido." << endl;
                 horaDesejada = horaAnterior;
+            }
+            else
+            {
+                system ("pause");
             }
             break;
         case 9: // sair do menu
@@ -379,7 +388,6 @@ void IHM()
             break;
         case 3: // SAIR
             cout << ">> Encerrando o Programa.\n";
-            system ("pause");
             return;
         default:
             cout << " # Opcao invalida! Tente novamente...\n";
