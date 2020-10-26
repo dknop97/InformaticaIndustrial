@@ -17,7 +17,7 @@
 - [x] Implementação do cálculo de potência ativa no horário em análise
 - [x] Implementação do cálculo de potência aparente no horário em análise
 - [x] Implementação do cálculo de fator potência no horário em análise
-- [x] Implementação do cálculo de energia consumida até o horário em análise
+- [x] Implementação do cálculo de energia consumida entre os horários em análise
 
 ##### Antes de executar conferir:
 - Conferir o Makefile, launch.json e tasks.json se estao com o mesmo nome do executavel.
