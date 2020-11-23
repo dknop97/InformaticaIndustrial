@@ -171,8 +171,4 @@ double Sensor::calcRMS(int N, int posicaoAmostra)
 	delete[] bufferCalculo;							  //Desalocando bloco de mem?ria alocado
 	RMS = sqrt(x2);									  // Calcula a raiz quadrada de RMS� = RMS
 	return RMS;
-
 }
-
-
-

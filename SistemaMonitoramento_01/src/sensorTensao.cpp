@@ -1,4 +1,4 @@
-#include "sensorCorrente.h"
+#include "sensorTensao.h"
 #include <math.h>
 #include <fstream>
 #include <iostream>
@@ -6,21 +6,21 @@
 #include <string.h>
 
 using namespace std;
-vector<string> headersCorrente = {"Nome do Sensor", "ID do sensor", "Frequencia da rede", "Numero de amostras por segundo", "Horario inicio da coleta", "Total de Amostras"};
+vector<string> headersTensao = {"Nome do Sensor", "ID do sensor", "Frequencia da rede", "Numero de amostras por segundo", "Horario inicio da coleta", "Total de Amostras"};
 
-SensorCorrente::SensorCorrente(const string& path) : 
-    Sensor::Sensor(path, headersCorrente), fRede(0)
+SensorTensao::SensorTensao(const string& path) : 
+    Sensor::Sensor(path, headersTensao), fRede(0)
 {
-    // cout << "CONSTRUTOR SENSOR DE CORRENTE:" << this->file.is_open() << endl;
+    // cout << "CONSTRUTOR SENSOR DE TENSAO:" << this->file.is_open() << endl;
 }
 
-SensorCorrente::~SensorCorrente()
+SensorTensao::~SensorTensao()
 {
-    // cout << "\n%% DESTRUTOR DO SENSOR DE CORRENTE\n" << endl;
+    // cout << "\n%% DESTRUTOR DO SENSOR DE TENSAO\n" << endl;
     this->file.close();
 }
 
-bool SensorCorrente::lerDados()
+bool SensorTensao::lerDados()
 {
     try
     {
@@ -35,12 +35,15 @@ bool SensorCorrente::lerDados()
             getline(this->file, d); // o get line sempre pula o cursor para a próxima linha
             idxf = d.find("\n"); //pegando o titulo do arquivo, que também serve para identificar ele na leitura
             vector<string> dadosHeader(this->headers.size());
+            // cout << "LINHA SENDO ANALISADA: \n" << d << endl;
             this->titulo = d.substr(1, idxf-1);
             cout << "\n $ Lendo dados do " << this->titulo << endl;
             while (n < this->headers.size())
             {                
                 getline(this->file, d); // pega a linha e a insere em d
+                // cout << "LINHA SENDO ANALISADA: \n" << d << endl;
                 idxi = d.find(":");
+                // dados os cabeçalhos esperados por algum outro meio, podemos compará-los aos do arquivo
                 if(d.substr(1, idxi-1) == this->headers[n]) // 1 para retirar o % do início da linha
                 {
                     // pegando o conteúdo após os ':' e indo até o fim da string da linha
@@ -61,9 +64,6 @@ bool SensorCorrente::lerDados()
             this->fracSegundo = 1.0 / getNumAmostrasSegundo();
 
             getline(this->file, d); // lendo a linha do "%DadosInicio"
-            // todos os dados estão em uma única linha
-            // para os testes, ler apenas os 20 primeiros
-            // for (int i = 0; i < 20; i++)
             for (int i = 0; i < this->numAmostras; i++)
             {
                 getline(this->file, d, ','); // pega a linha e a insere em d
@@ -73,7 +73,7 @@ bool SensorCorrente::lerDados()
         }
         else
         {
-            cout << "O arquivo nao esta aberto!" << endl;
+            cout << "O arquivo Nao esta aberto!" << endl;
             return false;
         }
     }
@@ -84,12 +84,12 @@ bool SensorCorrente::lerDados()
     return true;
 }
 
-int SensorCorrente::getFreqRede()
+int SensorTensao::getFreqRede()
 {
     return this->fRede;
 }
 
-bool SensorCorrente::getDado(const int &posicao, double &dadoARetornar)
+bool SensorTensao::getDado(const int &posicao, double &dadoARetornar)
 {    
     if (posicao == -1)
     {
@@ -103,24 +103,22 @@ bool SensorCorrente::getDado(const int &posicao, double &dadoARetornar)
     }
 }
 
-bool SensorCorrente::getCorrente(const string &horario, double &corrente)
+double SensorTensao::getTensao(const string &horario, double &tensao)
 {
-    if (this->getDado(this->getPosicao(horario), corrente))
+    if (this->getDado(this->getPosicao(horario), tensao))
     {
         return true;  
     }
     else 
     {
         return false;
-    }    
+    }      
 }
 
-double SensorCorrente::getRMS(const string &horario)
+double SensorTensao::getRMS(const string &horario)
 {
     int N = numAmostrasSegundo/getFreqRede(); //Numero de amostras por ciclo de onda
     int posicao = getPosicao(horario);	
     
-        return calcRMS(N , posicao);
-    
-    
+    return calcRMS(N , posicao);
 }

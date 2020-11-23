@@ -1,0 +1,138 @@
+#:kivy 1.11.1
+<MainWidget>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgb: 0.5,0.5,0.5 # tom de cinza
+        Rectangle:
+            size: self.size # todo o plano de fundo do MainWidget
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (1, 0.1) # 1 = total; 0.1 = 1/10 do tamanho total
+        spacing: 10
+        Label:
+            text: 'SUPERVISÓRIO v1.0'
+            size_hint_x: None
+            width: 300 # tamanho fixo, em px
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: None
+            width: 400
+            Label:
+                text: 'Configurações'
+            BoxLayout:
+                orientation: 'horizontal'
+                Button:
+                    text: "MODBUS"
+                    on_release: root._modbusPopup.open()
+                Button:
+                    text: "Scan Time"
+                    on_release: root._scanPopup.open()
+        Image:
+            id: img_con
+            size_hint_x: None
+            width: 80
+            source: 'imgs/desconectado.png'
+            pos_hint: {'top':1, 'right':1} # posicionada no canto superior direito
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: 0,1,1 # branco
+            Rectangle:
+                size: self.size # todo o plano de fundo do MainWidget
+        # Image:
+        #     source: 'imgs/Refinaria.png'
+        Label:
+            id: lb_temp
+            size_hint: (None, None)
+            size: (termometro.size[0]*0.5, termometro.size[1]*0.5)
+            pos_hint: {'x': -0.06, 'y':0.3}
+            canvas:
+                Color: 
+                    rgb:1,0,0
+                Rectangle:
+                    size: self.size
+                    pos: (self.pos[0] + self.width*1.5, self.pos[1])
+        Image:
+            id: termometro
+            source: 'imgs/termometro.png'
+            size_hint: 0.17, 0.17
+            pos_hint: lb_temp.pos_hint
+
+        Button:
+            size_hint: (None, None)
+            size: (0.65*62, 0.65*58) #fazendo escala baseado na imagem do botão, que tem 62x58px
+            background_normal: 'imgs/graph_icon.jpg'
+            background_down: 'imgs/graph_icon.jpg'
+            pos_hint: {'x': 0.002, 'y':0.22}
+            on_release:
+                root._graph.open()
+        Label:
+            id: nivel
+            text: '-.- ºC'
+            font_size: 25
+            bold: True
+            halign: 'center'
+            pos_hint: {'x': -0.45, 'y': 0.01} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            color: 0,0,0,1 #preto
+        TempLabel:
+            id: solenoide
+            pos_hint: {'x': 0.075, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: corrente
+            pos_hint: {'x': 0.075, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: estado_mot
+            pos_hint: {'x': 0.075, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: freq_des
+            text: "A definir..."
+            pos_hint: {'x': 0.075, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: t_part
+            pos_hint: {'x': 0.075, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: auto_control
+            pos_hint: {'x': 0.075, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: freq_mot
+            pos_hint: {'x': 0.075, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: tensao
+            pos_hint: {'x': 0.075, 'y': -0.095} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: rotacao
+            pos_hint: {'x': 0.350, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: pot_entrada
+            pos_hint: {'x': 0.350, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: temp_estator
+            pos_hint: {'x': 0.350, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: vz_entrada
+            pos_hint: {'x': 0.350, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: nivel
+            pos_hint: {'x': 0.350, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: nivel_h
+            pos_hint: {'x': 0.350, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        TempLabel:
+            id: nivel_l
+            pos_hint: {'x': 0.350, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+        
+        Button:
+            text:'Dados Históricos'
+            pos_hint: {'right': 1, 'down':1}
+            size_hint: (0.2, 0.05)
+            on_release:
+                root._hgraph.open()
+
+
+<TempLabel@Label>: # labels para apersentação da temperatura dos subprodutos da torre
+    text: '-.- ºC'
+    font_size: 20
+    bold: True
+    halign: 'center'
+    color: 0,0,0,1 #preto
