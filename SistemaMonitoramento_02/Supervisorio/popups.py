@@ -61,10 +61,13 @@ class HistGraphPopup(Popup):
         """
         super().__init__()
         for key,value in kwargs.get('tags').items():
+            if key == 'freq_des':
+                continue
             cb = LabeledCheckBoxHistGraph()
             cb.ids.label.text = key
             cb.ids.label.color = value['color']
             cb.id = key
+            cb.orientation = 'vertical'
             self.ids.sensores.add_widget(cb)
 
 class LabeledCheckBoxHistGraph(BoxLayout):

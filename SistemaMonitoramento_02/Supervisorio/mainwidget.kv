@@ -37,16 +37,44 @@
     FloatLayout:
         canvas:
             Color:
-                rgb: 0,1,1 # branco
+                rgb: 0,1,1 # azul, aleatório
             Rectangle:
                 size: self.size # todo o plano de fundo do MainWidget
         # Image:
         #     source: 'imgs/Refinaria.png'
+        BoxLayout:
+            id: layout
+            background_color: 0.5,0.5,0.5,0.5
+            orientation: 'vertical'
+            size_hint: (0.25, 0.15)
+            pos_hint: {'x': 0.025, 'y':0.62}
+            Label:
+                background_color: 0.5,0.5,0.5,0.5
+                text: "Frequência desejada para o motor"
+                bold: True
+                color: 0,0,0,1
+                font_size: 14
+            GridLayout:
+                cols: 2
+                rows: 1
+                TextInput:
+                    id: txt_freqDes
+                    text: '60' # frequência padrão da rede
+                    font_size: 14
+                    halign: 'center'
+                    valing: 'middle'
+                Button:
+                    size_hint: (0.9, None)
+                    height: 40
+                    text: "OK"
+                    on_release:
+                        app.root.setFreqDes(txt_freqDes.text)
+
         Label:
             id: lb_temp
             size_hint: (None, None)
             size: (termometro.size[0]*0.5, termometro.size[1]*0.5)
-            pos_hint: {'x': -0.06, 'y':0.3}
+            pos_hint: {'x': -0.04, 'y':0.3}
             canvas:
                 Color: 
                     rgb:1,0,0
@@ -67,58 +95,96 @@
             pos_hint: {'x': 0.002, 'y':0.22}
             on_release:
                 root._graph.open()
+        BoxLayout:
+            # acionamento do motor
+            orientation: 'horizontal'
+            Button:
+                size_hint: (None, None)
+                pos_hint: {'x': 0.002, 'y':0.12}
+                size: (0.65*150, 0.65*58)
+                height: 40
+                text: "Ligar Motor"
+                on_release:
+                    app.root.ligarMotor()
+            Button:
+                size_hint: (None, None)
+                size: (0.65*180, 0.65*58)
+                pos_hint: {'x': 0.002, 'y':0.12}
+                height: 40
+                text: "Desligar Motor"
+                on_release:
+                    app.root.desligarMotor()
+        BoxLayout:
+            # acionamento da solenoide
+            orientation: 'horizontal'
+            Button:
+                size_hint: (None, None)
+                size: (0.65*170, 0.65*58)
+                height: 40
+                text: "Abrir Solenóide"
+                color: 1,1,1,1
+                on_release:
+                    app.root.acionaSolenoide()
+            Button:
+                size_hint: (None, None)
+                size: (0.65*200, 0.65*58)
+                height: 40
+                text: "Fechar Solenóide"
+                color: 1,1,1,1
+                on_release:
+                    app.root.desacionaSolenoide()
         Label:
-            id: nivel
-            text: '-.- ºC'
-            font_size: 25
+            id: nivel_aux
+            text: '-.- L'
+            font_size: 20
             bold: True
-            halign: 'center'
-            pos_hint: {'x': -0.45, 'y': 0.01} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            halign: 'left'
+            pos_hint: {'x': -0.435, 'y': 0.01} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
             color: 0,0,0,1 #preto
-        TempLabel:
+        DataLabel:
             id: solenoide
             pos_hint: {'x': 0.075, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: corrente
             pos_hint: {'x': 0.075, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: estado_mot
             pos_hint: {'x': 0.075, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: freq_des
-            text: "A definir..."
+            # text: "A definir..."
             pos_hint: {'x': 0.075, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: t_part
             pos_hint: {'x': 0.075, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: auto_control
             pos_hint: {'x': 0.075, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: freq_mot
             pos_hint: {'x': 0.075, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: tensao
             pos_hint: {'x': 0.075, 'y': -0.095} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: rotacao
             pos_hint: {'x': 0.350, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: pot_entrada
             pos_hint: {'x': 0.350, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: temp_estator
             pos_hint: {'x': 0.350, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: vz_entrada
             pos_hint: {'x': 0.350, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: nivel
             pos_hint: {'x': 0.350, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: nivel_h
             pos_hint: {'x': 0.350, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
-        TempLabel:
+        DataLabel:
             id: nivel_l
             pos_hint: {'x': 0.350, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         
@@ -130,9 +196,9 @@
                 root._hgraph.open()
 
 
-<TempLabel@Label>: # labels para apersentação da temperatura dos subprodutos da torre
-    text: '-.- ºC'
+<DataLabel@Label>: # labels para apresentação da temperatura dos subprodutos da torre
+    text: '-.- '
     font_size: 20
     bold: True
-    halign: 'center'
+    halign: 'left'
     color: 0,0,0,1 #preto

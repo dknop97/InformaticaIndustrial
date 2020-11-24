@@ -79,18 +79,18 @@
                 on_release: root.dismiss()
 
 <DataGraphPopup>:
-    title: "Gráfico de temperatura na fornalha"
+    title: "Gráfico do nível do tanque"
     BoxLayout:
         orientation: 'vertical'
         TimeSeriesGraph:
             # atributos da classe graph
             id: graph
             xlabel: 'Horário'
-            ylabel: 'Temperatura [ºC]'
+            ylabel: 'Volume [L]'
             background_color: 0.5,0.5,0.5,0.5
             x_ticks_minor: 1
             x_ticks_major: 5
-            y_ticks_major: 100
+            y_ticks_major: 50
             x_grid_label: True
             y_grid_label: True
             padding: 5
@@ -98,7 +98,7 @@
             y_grid: True
             xmin: 0
             ymin: 0
-            ymax: 500
+            ymax: 1000
             # o valor máximo do x, ou seja, a quantidade de amostras exibidas por vez, vai ser definida pelo usuário
         BoxLayout:
             orientation: 'horizontal'
@@ -140,14 +140,14 @@
         id: label
 
 <HistGraphPopup>:
-    title: "Histórico de temperatura na refinaria"
+    title: "Histórico de Dados na Planta"
     BoxLayout:
         orientation: 'vertical'
         TimeSeriesGraph:
             # atributos da classe graph
             id: graph
             xlabel: 'Horário'
-            ylabel: 'Temperatura [ºC]'
+            ylabel: 'Leituras'
             background_color: 0.5,0.5,0.5,0.5
             x_ticks_minor: 1
             x_ticks_major: 5
@@ -158,8 +158,8 @@
             x_grid: True
             y_grid: True
             xmin: 0
-            ymin: 0
-            ymax: 500
+            ymin: 0 
+            ymax: 1000 #1000L máximos do tanque
             # o valor máximo do x, ou seja, a quantidade de amostras exibidas por vez, vai ser definida pelo usuário
 
         BoxLayout:
@@ -170,7 +170,7 @@
             orientation: 'horizontal'
             size_hint: (1, 0.1)
             Label:
-                text: 'Timestamp inicial \r\n [size=12] (DD/MM/AAA HH:MM:SS) [/size]'
+                text: 'Timestamp inicial \r\n [size=12] (DD/MM/AAAA HH:MM:SS) [/size]'
                 halign: 'center'
                 markup: True
             TextInput:
@@ -180,7 +180,7 @@
                 valign: 'middle'
                 multiline: False
             Label:
-                text: 'Timestamp final \r\n [size=12] (DD/MM/AAA HH:MM:SS) [/size]'
+                text: 'Timestamp final \r\n [size=12] (DD/MM/AAAA HH:MM:SS) [/size]'
                 halign: 'center'
                 markup: True
             TextInput:
@@ -195,7 +195,7 @@
                 on_release: root.dismiss()
 
 <LabeledCheckBoxHistGraph>:
-    orientation: 'horizontal'
+    orientation: 'vertical'
     size_hint: (0.05, 1)
     CheckBox:
         id: checkbox

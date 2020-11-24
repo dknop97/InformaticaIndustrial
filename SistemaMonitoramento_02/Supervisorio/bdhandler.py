@@ -52,21 +52,34 @@ class BDHandler():
         except Exception as e:
             print("# Erro em createTable(): ", e.args)
     
-    def insertData(self, data):
+    def insertData(self, data, tags):
         """
         Método para inserção do dados no BD
+        :param data = meas
         """
         try:
             # Protegendo a sessão crítica de operação com o Lock
             self._lock.acquire()
             timestamp   = str(data['timestamp'])
             str_cols    = 'timestamp,' + ','.join(data['values'].keys())
-            str_values  = f"'{timestamp}'," + ','.join([str(data['values'][k]) for k in data['values'].keys()])
+            # print(data['values'].keys())
+            # print(">> str_cols: ", str_cols)
+            str_values = f"'{timestamp}'"
+            for key in data['values'].keys():
+                # print("> tags[", key, "]['multi']: ", tags[key]['multi'])
+                if tags[key]['multi'] is not None:
+                    # >Na escrita deve-se multiplicar o valor a ser escrito pelo multiplicador
+                    # antes de realizar o envio para o CLP.
+                    str_values  += ',' + (str(data['values'][key]*tags[key]['multi']))
+                else:
+                    str_values  += ',' + str(data['values'][key])
+            # str_values  = f"'{timestamp}'," + ','.join([str(data['values'][k]) for k in data['values'].keys()])
+            # print("> str_values: ", str_values)
             sql_str = f'INSERT INTO {self._tablename} ({str_cols}) VALUES ({str_values});'
             # Preparando a query
             self._cursor.execute(sql_str)
             # Implementado a SQL QUERY no BD
-            self._con.commit()
+            # self._con.commit()
         except Exception as e:
             print("# Erro em insertData(): ", e.args)
         finally:
