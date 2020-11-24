@@ -15,7 +15,7 @@
 	4. Execute a main.py, utilizando os recursos do VSCode ou então com o comando python main.py no terminal
 
 ##### Tarefas a fazer:
-- [ ] Conferir se a operação do sistema está de acordo com o esperado (DK)
+- [X] Conferir se a operação do sistema está de acordo com o esperado (DK)
 - [ ] Desenvolver layout da planta
 - [ ] Analisar e implementar funcionalidades necessárias para exibição dos dados
 - [ ] Implementar layout funcional

@@ -190,22 +190,34 @@ class MainWidget(BoxLayout):
         except Exception as e:
             print ("# Erro em parseDTString(): ", e.args)
     
-    def ligarMotor(self):
+    def habilitaAutoControl(self):
         """
-        Método para acionamento do motor
+        Método para acionamento do auto controle da planta
         """
         self._meas['values']['auto_control'] = 1
         self._modbusClient.write_single_coil(self._tags['auto_control']['addr'] , self._meas['values']['auto_control'])
     
+    def desabilitaAutoControl(self):
+        """
+        Método para desacionamento do auto controle da planta
+        """
+        self._meas['values']['auto_control'] = 0
+        self._modbusClient.write_single_coil(self._tags['auto_control']['addr'] , self._meas['values']['auto_control'])
+    
+    def ligarMotor(self):
+        """
+        Método para acionamento do motor
+        """
+        self._meas['values']['estado_mot'] = 1
+        self._modbusClient.write_single_coil(self._tags['estado_mot']['addr'] , self._meas['values']['estado_mot'])
+
     def desligarMotor(self):
         """
         Método para desligamento do motor
         """
-        self._meas['values']['auto_control'] = 0
         self._meas['values']['estado_mot'] = 0
-        self._modbusClient.write_single_coil(self._tags['auto_control']['addr'] , self._meas['values']['auto_control'])
         self._modbusClient.write_single_coil(self._tags['estado_mot']['addr'] , self._meas['values']['estado_mot'])
-    
+
     def acionaSolenoide(self):
         """
         Método para acionamento da válvula solenóide
