@@ -159,7 +159,7 @@
             y_grid: True
             xmin: 0
             ymin: 0 
-            ymax: 1000 #1000L máximos do tanque
+            ymax: 2000 #1000L máximos do tanque, mas a rotação é um parâmetro que vai, em max 60Hz, à 1800 rpm
             # o valor máximo do x, ou seja, a quantidade de amostras exibidas por vez, vai ser definida pelo usuário
 
         BoxLayout:
@@ -202,5 +202,5 @@
         on_active: app.root.getDataDB()
     Label:
         id: label
-        font_size: 12
+        font_size: 11
         bold: True

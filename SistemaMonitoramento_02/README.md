@@ -16,6 +16,6 @@
 
 ##### Tarefas a fazer:
 - [X] Conferir se a operação do sistema está de acordo com o esperado (DK)
-- [ ] Desenvolver layout da planta
-- [ ] Analisar e implementar funcionalidades necessárias para exibição dos dados
-- [ ] Implementar layout funcional
+- [X] Desenvolver layout da planta
+- [X] Analisar e implementar funcionalidades necessárias para exibição dos dados
+- [X] Implementar layout funcional

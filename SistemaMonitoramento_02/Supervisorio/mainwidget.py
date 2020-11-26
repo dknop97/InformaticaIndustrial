@@ -10,10 +10,12 @@ from timeseriesgraph        import TimeSeriesGraph
 from bdhandler              import BDHandler
 from kivy_garden.graph      import LinePlot
 
+
 class MainWidget(BoxLayout):
     """
     Widget principal da aplicação
     """
+    Window.size = 1446,750
     _updateThread = None
     _updateWidgets = True
     _tags = {} # referencias para os dados de campo
@@ -172,7 +174,7 @@ class MainWidget(BoxLayout):
                 if key == 'timestamp':
                     continue
                 p = LinePlot(line_width=1.5, color=self._tags[key]['color'])
-                p.points = [(x, value[x]) for x in range(0, len(value))]
+                p.points = [(x, (value[x]/self._tags[key]['multi'])) for x in range(0, len(value))]
                 self._hgraph.ids.graph.add_plot(p)
             self._hgraph.ids.graph.xmax = len(dados[cols[0]])
             self._hgraph.ids.graph.update_x_labels([datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f") for x in dados['timestamp']])

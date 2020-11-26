@@ -1,225 +1,314 @@
 #:kivy 1.11.1
 <MainWidget>:
-    orientation: 'vertical'
+    orientation: 'horizontal'
     canvas:
         Color:
             rgb: 0.5,0.5,0.5 # tom de cinza
         Rectangle:
             size: self.size # todo o plano de fundo do MainWidget
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: (1, 0.1) # 1 = total; 0.1 = 1/10 do tamanho total
-        spacing: 10
-        Label:
-            text: 'SUPERVISÓRIO v1.0'
-            size_hint_x: None
-            width: 300 # tamanho fixo, em px
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_x: None
-            width: 400
-            Label:
-                text: 'Configurações'
-            BoxLayout:
-                orientation: 'horizontal'
-                Button:
-                    text: "MODBUS"
-                    on_release: root._modbusPopup.open()
-                Button:
-                    text: "Scan Time"
-                    on_release: root._scanPopup.open()
-        Image:
-            id: img_con
-            size_hint_x: None
-            width: 80
-            source: 'imgs/desconectado.png'
-            pos_hint: {'top':1, 'right':1} # posicionada no canto superior direito
     FloatLayout:
         canvas:
             Color:
                 rgb: 0,1,1 # azul, aleatório
             Rectangle:
                 size: self.size # todo o plano de fundo do MainWidget
-        # Image:
-        #     source: 'imgs/Refinaria.png'
-        BoxLayout:
-            id: layout
-            background_color: 0.5,0.5,0.5,0.5
-            orientation: 'vertical'
-            size_hint: (0.25, 0.15)
-            pos_hint: {'x': 0.025, 'y':0.62}
-            Label:
-                background_color: 0.5,0.5,0.5,0.5
-                text: "Frequência desejada para o motor"
-                bold: True
-                color: 0,0,0,1
-                font_size: 14
-            GridLayout:
-                cols: 2
-                rows: 1
-                TextInput:
-                    id: txt_freqDes
-                    text: '60' # frequência padrão da rede
-                    font_size: 14
-                    halign: 'center'
-                    valing: 'middle'
-                Button:
-                    size_hint: (0.9, None)
-                    height: 40
-                    text: "OK"
-                    on_release:
-                        app.root.setFreqDes(txt_freqDes.text)
-
+        Image:
+            source: 'imgs/planta2.png'
+            canvas:
+                Color:
+                    rgb: (1, 1, 1)
+                Rectangle:
+                    texture: self.texture
+                    size: self.width + 20, self.height + 20
+                    pos: self.x - 10, self.y - 10
         Label:
             id: lb_temp
             size_hint: (None, None)
-            size: (termometro.size[0]*0.5, termometro.size[1]*0.5)
-            pos_hint: {'x': -0.04, 'y':0.3}
+            size: (termometro.size[0]*.56, termometro.size[1]*.92)
+            pos_hint: {'x': -0.31, 'y':0.365}
             canvas:
                 Color: 
-                    rgb:1,0,0
+                    rgb:.47,.82,.843
                 Rectangle:
                     size: self.size
                     pos: (self.pos[0] + self.width*1.5, self.pos[1])
         Image:
             id: termometro
-            source: 'imgs/termometro.png'
-            size_hint: 0.17, 0.17
-            pos_hint: lb_temp.pos_hint
+            source: 'imgs/tanque.png'
+            size_hint:  0.46, 0.46
+            size: (1*0.8,1*1.1)
+            pos_hint: {'x': -0.027, 'y':0.328}
 
         Button:
             size_hint: (None, None)
             size: (0.65*62, 0.65*58) #fazendo escala baseado na imagem do botão, que tem 62x58px
             background_normal: 'imgs/graph_icon.jpg'
             background_down: 'imgs/graph_icon.jpg'
-            pos_hint: {'x': 0.002, 'y':0.22}
+            pos_hint: {'x': 0.88, 'y': 0.36}
             on_release:
                 root._graph.open()
-        #Atuação na planta
-        BoxLayout:
-            orientation: 'horizontal'        
-            text: 'Atuação na planta'
-            hlign: 'center'
-            BoxLayout:
-                # acionamento do motor
-                orientation: 'horizontal'
-                Button:
-                    size_hint: (None, None)
-                    pos_hint: {'x': 0.002, 'y':0.12}
-                    size: (0.65*200, 0.65*58)
-                    height: 40
-                    text: "Auto Control - ON"
-                    on_release:
-                        app.root.habilitaAutoControl()
-                Button:
-                    size_hint: (None, None)
-                    size: (0.65*200, 0.65*58)
-                    pos_hint: {'x': 0.002, 'y':0.12}
-                    height: 40
-                    text: "Auto Control - OFF"
-                    on_release:
-                        app.root.desabilitaAutoControl()
-            BoxLayout:
-                # acionamento do auto controle
-                orientation: 'horizontal'
-                Button:
-                    size_hint: (None, None)
-                    pos_hint: {'x': 0.002, 'y':0.12}
-                    size: (0.65*150, 0.65*58)
-                    height: 40
-                    text: "Ligar Motor"
-                    on_release:
-                        app.root.ligarMotor()
-                Button:
-                    size_hint: (None, None)
-                    size: (0.65*180, 0.65*58)
-                    pos_hint: {'x': 0.002, 'y':0.12}
-                    height: 40
-                    text: "Desligar Motor"
-                    on_release:
-                        app.root.desligarMotor()
-                        
-            BoxLayout:
-                # acionamento da solenoide
-                orientation: 'horizontal'
-                pos_hint: {'x': 0.002, 'y':0.12}
-                Button:
-                    size_hint: (None, None)
-                    size: (0.65*170, 0.65*58)
-                    height: 40
-                    text: "Abrir Solenóide"
-                    color: 1,1,1,1
-                    on_release:
-                        app.root.acionaSolenoide()
-                Button:
-                    size_hint: (None, None)
-                    size: (0.65*200, 0.65*58)
-                    height: 40
-                    text: "Fechar Solenóide"
-                    color: 1,1,1,1
-                    on_release:
-                        app.root.desacionaSolenoide()
         Label:
             id: nivel_aux
             text: '-.- L'
             font_size: 20
             bold: True
             halign: 'left'
-            pos_hint: {'x': -0.435, 'y': 0.01} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': -0.2, 'y': -0.22} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
             color: 0,0,0,1 #preto
+
+        Image:
+            id: monitor
+            source: 'imgs/monitor.png'
+            size_hint: (.8, .8)
+            pos_hint: {'x': 0.42, 'y': 0.2}
+        
+        Button:
+            size_hint: (.3*.75, .4*.75)
+            background_normal: 'imgs/valvula.png'
+            background_down: 'imgs/valvula.png'
+            pos_hint: {'x': 0.002, 'y':0.015}
+            on_release:
+        Button:
+            size_hint: (.35*.6, .4*.6)
+            background_normal: 'imgs/clp.png'
+            background_down: 'imgs/clp.png'
+            pos_hint: {'x': 0.43, 'y':0.04}
+            on_release:
+        Button:
+            size_hint: (.35*.7, .4*.7)
+            background_normal: 'imgs/motor.png'
+            background_down: 'imgs/motor.png'
+            pos_hint: {'x': 0.35, 'y':0.63}
+            on_release:
+        Button:
+            size_hint: (.3*.6, .4*.6)
+            background_normal: 'imgs/inverter.png'
+            background_down: 'imgs/inverter.png'
+            pos_hint: {'x': 0.33, 'y':0.3}
+            on_release:
+                
+
         DataLabel:
             id: solenoide
-            pos_hint: {'x': 0.075, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: corrente
-            pos_hint: {'x': 0.075, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: estado_mot
-            pos_hint: {'x': 0.075, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: freq_des
             # text: "A definir..."
-            pos_hint: {'x': 0.075, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: t_part
-            pos_hint: {'x': 0.075, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: auto_control
-            pos_hint: {'x': 0.075, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: freq_mot
-            pos_hint: {'x': 0.075, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: tensao
-            pos_hint: {'x': 0.075, 'y': -0.095} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.25, 'y': -0.095} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: rotacao
-            pos_hint: {'x': 0.350, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.43} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: pot_entrada
-            pos_hint: {'x': 0.350, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.355} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: temp_estator
-            pos_hint: {'x': 0.350, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.28} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: vz_entrada
-            pos_hint: {'x': 0.350, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.205} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: nivel
-            pos_hint: {'x': 0.350, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.13} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: nivel_h
-            pos_hint: {'x': 0.350, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': 0.055} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
         DataLabel:
             id: nivel_l
-            pos_hint: {'x': 0.350, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+            pos_hint: {'x': 0.40, 'y': -0.02} # posicionalmento manual sobre a imagem de fundo; variam de -0.5 a 0.5
+    
         
-        Button:
-            text:'Dados Históricos'
-            pos_hint: {'right': 1, 'down':1}
-            size_hint: (0.2, 0.05)
-            on_release:
-                root._hgraph.open()
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (.27,1)
+        spacing: 10
+        Label:
+            size_hint: (1, 0.05)
+            text: 'SUPERVISÓRIO'
+            width: 300 # tamanho fixo, em px
+
+        
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                size_hint: (1, 0.2)
+                bold: True
+                text: 'Pártida automática:'
+                background_color: (0,0,1,1)
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                width: 300 # tamanho fixo, em px
+            BoxLayout:
+                # acionamento do Auto Controle
+                orientation: 'horizontal'
+                spacing:10
+                padding: 20
+                Button:
+                    size: self.size
+                    text: "Auto Control - ON"
+                    on_release:
+                        app.root.habilitaAutoControl()
+                Button:
+                    size: self.size
+                    text: "Auto Control - OFF"
+                    on_release:
+                        app.root.desabilitaAutoControl()
+            Label:
+                size_hint: (1, 0.2)
+                bold: True
+                text: 'Acionamento do Motor:'
+                background_color: (0,0,1,1)
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                width: 300 # tamanho fixo, em px
+            BoxLayout:
+                # acionamento do motor
+                orientation: 'horizontal'
+                spacing:10
+                padding: 20
+                Button:
+                    size: self.size
+                    text: "Ligar Motor"
+                    on_release:
+                        app.root.ligarMotor()
+                Button:
+                    size: self.size
+                    text: "Desligar Motor"
+                    on_release:
+                        app.root.desligarMotor()
+            Label:
+                size_hint: (1, 0.2)
+                bold: True
+                text: 'Controle Solenóide:'
+                background_color: (0,0,1,1)
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                width: 300 # tamanho fixo, em px
+                        
+            BoxLayout:
+                # acionamento da solenoide
+                orientation: 'horizontal'
+                spacing:10
+                padding: 20
+                Button:
+                    size: self.size
+                    text: "Abrir Solenóide"
+                    color: 1,1,1,1
+                    on_release:
+                        app.root.acionaSolenoide()
+                Button:
+                    size: self.size
+                    text: "Fechar Solenóide"
+                    color: 1,1,1,1
+                    on_release:
+                        app.root.desacionaSolenoide()
+            BoxLayout:
+                id: layout
+                orientation: 'vertical'
+                Label:
+                    size_hint: (1, 0.3)
+                    text: "Frequência do Motor:"
+                    bold: True
+                    background_color: (0,0,1,1)
+                    canvas.before:
+                        Color:
+                            rgba: self.background_color
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+                GridLayout:
+                    padding:20
+                    cols: 2
+                    rows: 1
+                    TextInput:
+                        id: txt_freqDes
+                        text: '60' # frequência padrão da rede
+                        font_size: 14
+                        halign: 'center'
+                        valing: 'middle'
+                    Button:
+                        text: "OK"
+                        on_release:
+                            app.root.setFreqDes(txt_freqDes.text)
+            BoxLayout:
+                padding:20         
+                Button:
+                    text:'Dados Históricos'
+                    on_release:
+                        root._hgraph.open()
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, 0.5)
+            spacing:5
+            padding: 20
+            Label:
+                size_hint: (1, 0.2)
+                bold: True
+                text: 'Configurações:'
+                background_color: (0,0,0,1)
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
+                text: "MODBUS"
+                on_release: root._modbusPopup.open()
+            Button:
+                text: "Scan Time"
+                on_release: root._scanPopup.open()
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (1, 0.3)
+                Label:
+                    size_hint_y: 0.5
+                    pos_hint: {'right': 1.3, 'down': 2}
+                    text: 'STATUS:'
+                    width: 1000
+                Image:
+                    id: img_con
+                    size_hint: (1.5, 1)
+                    width: 80
+                    pos_hint: {'x': 1, 'y':0}
+                    source: 'imgs/desconectado.png'
+                Label:
+                    size_hint_y: 0.5
+                    pos_hint: {'right': 1.3, 'down': 2}
+                    text: 'Versão 1.0v'
+           
+      
+    
 
 
 <DataLabel@Label>: # labels para apresentação da temperatura dos subprodutos da torre
@@ -228,3 +317,4 @@
     bold: True
     halign: 'left'
     color: 0,0,0,1 #preto
+

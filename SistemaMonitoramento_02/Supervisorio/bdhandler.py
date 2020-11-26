@@ -94,14 +94,21 @@ class BDHandler():
             # Protegendo a sessão crítica de operação com o Lock
             self._lock.acquire()
             sql_str = f"SELECT {','.join(cols)} FROM {self._tablename} WHERE timestamp BETWEEN '{init_t}' AND '{final_t}'"
+            # print("'%' sql_str:", sql_str)
             # Preparando a query
             self._cursor.execute(sql_str)
             # dict para armazenar os dados obtidos na consulta do BD
             dados = dict((sensor, []) for sensor in cols)
             # atribuição de valores ao dicionário de dados da consulta
             for linha in self._cursor.fetchall():
+                # print("-----------------")
+                # print("=> SelectData -> linha = ", linha)
+                # print("-----------------")
+                # print("********DADOS SEM TRATAMENTO**********")
                 for d in range(0, len(linha)):
                     dados[cols[d]].append(linha[d])
+                    # print("=> SelectData -> cols[d]: ", cols[d])
+                # print("******************")
             return dados
         except Exception as e:
             print("# Erro em insertData(): ", e.args)

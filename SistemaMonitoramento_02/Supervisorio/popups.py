@@ -61,7 +61,7 @@ class HistGraphPopup(Popup):
         """
         super().__init__()
         for key,value in kwargs.get('tags').items():
-            if key == 'freq_des':
+            if key == 'freq_des': #para não exibir o checkbox de frequência desejada, visto que é uma tag só de escrita
                 continue
             cb = LabeledCheckBoxHistGraph()
             cb.ids.label.text = key
