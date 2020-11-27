@@ -50,8 +50,8 @@ class MainWidget(BoxLayout):
         # O gráfico em tempo real está sendo apenas do Nível do tanque
         self._graph  = DataGraphPopup(self._max_points, self._tags['nivel']['color']) 
         self._hgraph = HistGraphPopup(tags=self._tags)
-
         self._db = BDHandler(kwargs.get('db_path'), self._tags)
+        self._freqAtual = 60
 
     def startDataRead(self, ip, port):
         """
@@ -71,6 +71,7 @@ class MainWidget(BoxLayout):
                 self._updateThread = Thread(target=self.updater)
                 self._updateThread.start()
                 self.ids.img_con.source = 'imgs/conectado.png'
+                self.ids.monitor.source = 'imgs/monitor.png'
                 self._modbusPopup.dismiss()
             else:
                 self._modbusPopup.setInfo("Falha na conexão com o servidor")
@@ -115,17 +116,11 @@ class MainWidget(BoxLayout):
             # value['addr'] == addr, # value['multiplicador'] == multiplicador, # value['tabela'] == 0 (coil) ou 1 (holding register)
             if key == 'freq_des': # tag somente de escrita
                 # print("self.ids.txt_freqDes.text: ", self.ids.txt_freqDes.text)
-                self._meas['values'][key] = self.ids.txt_freqDes.text
-            elif value['multi'] is not None:
-                if value['tabela'] == 0: # coils...
-                    self._meas['values'][key] = (self._modbusClient.read_coils(value['addr'], 1)[0])/value['multi']
-                else: # holding registers
-                    self._meas['values'][key] = (self._modbusClient.read_holding_registers(value['addr'], 1)[0])/value['multi']
-            else:
-                if value['tabela'] == 0: # coils...
-                    self._meas['values'][key] = self._modbusClient.read_coils(value['addr'], 1)[0]
-                else: # holding registers
-                    self._meas['values'][key] = self._modbusClient.read_holding_registers(value['addr'], 1)[0]
+                self._meas['values'][key] = self._freqAtual
+            elif value['tabela'] == 0: # coils...
+                self._meas['values'][key] = (self._modbusClient.read_coils(value['addr'], 1)[0])
+            else: # holding registers
+                self._meas['values'][key] = (self._modbusClient.read_holding_registers(value['addr'], 1)[0])/value['multi']
 
     def updateGUI(self):
         """
@@ -139,7 +134,7 @@ class MainWidget(BoxLayout):
                 self.ids[key].text = key + ": " + str(self._meas['values'][key])
 
         # Atualização do nível do tanque
-        self.ids.lb_temp.size    = (self.ids.lb_temp.size[0], (self._meas['values']['nivel']*self.ids.termometro.size[1]/1000))
+        self.ids.lb_tanque.size    = (self.ids.lb_tanque.size[0], (self._meas['values']['nivel']*self.ids.tanque.size[1]/1000))
         self.ids['nivel_aux'].text = str(self._meas['values']['nivel']) + ' ' + self._tags['nivel']['un']
         
         # Atualização do Gráfico do Nível do tanque em tempo real
@@ -174,7 +169,8 @@ class MainWidget(BoxLayout):
                 if key == 'timestamp':
                     continue
                 p = LinePlot(line_width=1.5, color=self._tags[key]['color'])
-                p.points = [(x, (value[x]/self._tags[key]['multi'])) for x in range(0, len(value))]
+                p.points = [(x, (value[x]/self._tags[key]['multi'])) for x in range(0, len(value))] if self._tags[key]['multi'] is not None else [(x, value[x]) for x in range(0, len(value))]
+                        
                 self._hgraph.ids.graph.add_plot(p)
             self._hgraph.ids.graph.xmax = len(dados[cols[0]])
             self._hgraph.ids.graph.update_x_labels([datetime.strptime(x, "%Y-%m-%d %H:%M:%S.%f") for x in dados['timestamp']])
@@ -198,28 +194,28 @@ class MainWidget(BoxLayout):
         """
         self._meas['values']['auto_control'] = 1
         self._modbusClient.write_single_coil(self._tags['auto_control']['addr'] , self._meas['values']['auto_control'])
-    
+
     def desabilitaAutoControl(self):
         """
         Método para desacionamento do auto controle da planta
         """
         self._meas['values']['auto_control'] = 0
         self._modbusClient.write_single_coil(self._tags['auto_control']['addr'] , self._meas['values']['auto_control'])
-    
+
     def ligarMotor(self):
         """
         Método para acionamento do motor
         """
         self._meas['values']['estado_mot'] = 1
         self._modbusClient.write_single_coil(self._tags['estado_mot']['addr'] , self._meas['values']['estado_mot'])
-
+    
     def desligarMotor(self):
         """
         Método para desligamento do motor
         """
         self._meas['values']['estado_mot'] = 0
         self._modbusClient.write_single_coil(self._tags['estado_mot']['addr'] , self._meas['values']['estado_mot'])
-
+    
     def acionaSolenoide(self):
         """
         Método para acionamento da válvula solenóide
@@ -240,6 +236,68 @@ class MainWidget(BoxLayout):
         """
         if freq: #se a string do campo texto do Text Input não vier vazia, fazemos...
             self._meas['values']['freq_des'] = int(freq)
+            self._freqAtual = self._meas['values']['freq_des']
             self._modbusClient.write_single_register(self._tags['freq_des']['addr'] , self._meas['values']['freq_des'])
         else:
             return
+    
+    def setSolenoide(self):
+        """
+        Método que posiciona o label da solenoide
+        """
+        self.ids.solenoide.pos_hint = {'x': 0.25, 'y': 0.43}
+           
+    def setInversor(self):
+        """
+        Método que posiciona o label do Inversor
+        """
+        self.ids.corrente.pos_hint = {'x': 0.25, 'y': -0.02}
+        self.ids.pot_entrada.pos_hint = {'x': 0.40, 'y': 0.355}
+    
+    def setClp(self):
+        """
+        Método que posiciona o label do Clp
+        """
+        self.ids.tensao.pos_hint = {'x': 0.25, 'y': -0.095}
+    
+    def setMotor(self):
+        """
+        Método que posiciona o label do Motor
+        """
+        self.ids.estado_mot.pos_hint = {'x': 0.25, 'y': 0.13}
+        self.ids.freq_des.pos_hint = {'x': 0.25, 'y': 0.205}
+        self.ids.t_part.pos_hint = {'x': 0.25, 'y': 0.28}
+        self.ids.auto_control.pos_hint = {'x': 0.25, 'y': 0.055}
+        self.ids.freq_mot.pos_hint = {'x': 0.25, 'y': 0.355}
+        self.ids.rotacao.pos_hint = {'x': 0.40, 'y': 0.43}
+        self.ids.temp_estator.pos_hint = {'x': 0.40, 'y': 0.28}
+    
+    def setTanque(self):
+        """
+        Método que posiciona o label do Tanque
+        """
+        self.ids.vz_entrada.pos_hint = {'x': 0.40, 'y': 0.205}
+        self.ids.nivel.pos_hint = {'x': 0.40, 'y': 0.13}
+        self.ids.nivel_h.pos_hint = {'x': 0.40, 'y': 0.055}
+        self.ids.nivel_l.pos_hint = {'x': 0.40, 'y': -0.02}
+    
+    
+    def setRedefinir(self):
+        """
+        Metodo que remove os labels 
+        """
+        self.ids.estado_mot.pos_hint = {'x': 99, 'y': 99}
+        self.ids.freq_des.pos_hint = {'x': 99, 'y': 99}
+        self.ids.t_part.pos_hint = {'x': 99, 'y': 99}
+        self.ids.auto_control.pos_hint = {'x': 99, 'y': 99}
+        self.ids.freq_mot.pos_hint = {'x': 99, 'y': 99}
+        self.ids.rotacao.pos_hint = {'x': 99, 'y': 99}
+        self.ids.temp_estator.pos_hint = {'x': 99, 'y': 99}
+        self.ids.tensao.pos_hint = {'x': 99, 'y': 99}
+        self.ids.corrente.pos_hint = {'x': 99, 'y': 99}
+        self.ids.pot_entrada.pos_hint = {'x': 99, 'y': 99}
+        self.ids.solenoide.pos_hint = {'x': 99, 'y': 99}
+        self.ids.vz_entrada.pos_hint = {'x': 99, 'y': 99}
+        self.ids.nivel.pos_hint = {'x': 99, 'y': 99}
+        self.ids.nivel_h.pos_hint = {'x': 99, 'y': 99}
+        self.ids.nivel_l.pos_hint = {'x': 99, 'y': 99}

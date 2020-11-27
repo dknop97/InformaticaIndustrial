@@ -4,7 +4,7 @@
 	- Guilherme de Souza Barbosa Evangelista Coelho - 201765198AI - Turma B
   	- Thiago Duque Saber de Lima - 201665230AI - Turma B
 % Data: 27/11/2020
-% Enunciado: Trabalho 2 - Sistema de Supervisório em Python
+% Enunciado: Trabalho 02 - Sistema de Supervisório em Python
 """
 from kivy.app           import App
 from mainwidget         import MainWidget
@@ -38,7 +38,7 @@ class MainApp(App):
             'nivel_l'       : [810,  None,  0,  None],
             'solenoide'     : [801,  None,  0,  None]
         }
-        db_path = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_2\\Supervisorio\\db\\scada.db"
+        db_path = "G:\\Meu Drive\\UFJF\\Engenharia Eletrica\\2020-1\\04 - Informatica Industrial\\ERE\\Trabalhos\\Trabalho_2\\DK\\Supervisorio\\db\\scada.db"
         self._widget = MainWidget(scan_time=1000, server_ip='127.0.0.1', server_port=502, modbus_addrs=modbus_addrs, db_path = db_path)
         return self._widget
     
